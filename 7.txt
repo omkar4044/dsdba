@@ -1,0 +1,63 @@
+# Step 1: Import libraries
+import nltk
+import string
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+from nltk import pos_tag
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+
+# Download required NLTK data
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+nltk.download('stopwords')
+
+# Step 2: Sample document
+doc = "Natural Language Processing is a branch of artificial intelligence that helps computers understand, interpret and manipulate human language."
+print("Original Document:\n", doc)
+
+
+# Step 3: Tokenization
+tokens = word_tokenize(doc)
+print("\nTokenization:\n", tokens)
+
+# Step 4: POS Tagging
+pos_tags = pos_tag(tokens)
+print("\nPOS Tagging:\n", pos_tags)
+
+
+# Step 5: Stop Words Removal
+stop_words = set(stopwords.words('english'))
+tokens_no_stop = [word for word in tokens if word.lower() not in stop_words and word.isalpha()]
+print("\nAfter Stop Words Removal:\n", tokens_no_stop)
+
+# Step 6: Stemming
+stemmer = PorterStemmer()
+stemmed_words = [stemmer.stem(word) for word in tokens_no_stop]
+print("\nAfter Stemming:\n", stemmed_words)
+
+
+# Step 7: Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized_words = [lemmatizer.lemmatize(word.lower()) for word in tokens_no_stop]
+print("\nAfter Lemmatization:\n", lemmatized_words)
+
+
+# Step 8: TF-IDF Vectorization
+# Let's add a second simple document for context
+docs = [
+    doc,
+    "Machine learning is an important part of artificial intelligence that enables computers to learn from data."
+]
+
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(docs)
+
+
+# Convert to DataFrame
+import pandas as pd
+tfidf_df = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names_out())
+print("\nTF-IDF Representation:\n")
+print(tfidf_df)

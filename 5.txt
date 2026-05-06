@@ -1,0 +1,52 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+df = pd.read_csv('Social_Network_Ads.csv')
+df.head()
+
+
+# Step 4: Define features and target
+# Assume 'Purchased' is the target; 'Age' and 'EstimatedSalary' are features
+X = df[['Age', 'EstimatedSalary']]
+y = df['Purchased']
+
+
+# Step 5: Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=0
+)
+
+
+# Step 6: Feature Scaling
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+
+# Step 7: Train logistic regression model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+
+# Step 8: Predict test results
+y_pred = model.predict(X_test)
+
+
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:\n", cm)
+
+
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+
+error_rate = 1 - accuracy
+print("Error Rate:", error_rate)
+
+precision = precision_score(y_test, y_pred)
+print("Precision:", precision)
+
+recall = recall_score(y_test, y_pred)
+print("Recall:", recall)

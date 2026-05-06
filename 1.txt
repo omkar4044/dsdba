@@ -1,0 +1,33 @@
+ # Import required libraries 
+import pandas as pd
+import numpy as np
+
+# Load dataset from web source  
+df=pd.read_csv("titanic.csv")
+df
+
+# Handle missing values
+df.isnull().sum()
+df.dropna(inplace=True)
+df.isnull().sum()
+df.duplicated().sum()
+
+
+# Describe dataset (statistics, variables, dimensions) 
+df.shape
+df.describe()
+df.dtypes
+df.columns
+df.info()
+df.nunique()
+df.dtypes
+
+# Convert 'survived' to category
+df['Survived']=df['Survived'].astype('category')
+df['Survived'].dtype
+
+
+# Convert categorical variables to numerical 
+df['Sex']=df['Sex'].map({"male":0,"female":1})
+
+df['Sex'].dtype

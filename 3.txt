@@ -1,0 +1,30 @@
+import pandas as pd
+import numpy as np
+
+df=pd.read_csv('Iris.csv')
+
+df.head()
+
+df.isnull().sum()
+
+df.duplicated().sum()
+
+print("Mean:\n",df.mean(numeric_only=True))
+print("Median:\n",df.median(numeric_only=True))
+print("min:\n",df.min(numeric_only=True))
+print("max:\n",df.max(numeric_only=True))
+print("Varience:\n",df.var(numeric_only=True))
+print("Stsndard Devation:\n",df.std(numeric_only=True))
+
+
+#  Group Data by Categorical Variable
+# Group by species
+group=df.groupby('Species')
+# Mean values for each species
+print(group.mean(numeric_only=True))
+
+
+# Multiple statistics together
+df.groupby('Species').agg(['mean','min','max','std'])
+
+df['Species'].value_counts()

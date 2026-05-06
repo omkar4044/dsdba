@@ -1,0 +1,24 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df=pd.read_csv("Iris.csv")
+
+df.head()
+
+# Identify Feature Types
+print(df.dtypes)
+
+df.hist(figsize=(10,8))
+plt.suptitle("Histograms of Iris Features")
+plt.show()
+
+plt.figure(figsize=(10,6))
+sns.boxplot(data=df)
+plt.title("Boxplot of Iris Features")
+plt.show()
+
+# Compare Distributions
+sns.boxplot(x='Species', y='PetalLengthCm', data=df)
+plt.title("Petal Length Distribution by Species")
+plt.show()

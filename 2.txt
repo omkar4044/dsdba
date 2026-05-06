@@ -1,0 +1,79 @@
+import pandas as pd
+import numpy as np
+
+# Create dataset
+data = {
+    'Name': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+    'Marks': [85, 90, np.nan, 40, 120, 75, -10, 88],
+    'Attendance': [80, 95, 85, np.nan, 60, 70, 105, 90],
+    'StudyHours': [2, 3, 4, 1, 10, np.nan, 5, 2]
+}
+
+
+
+df = pd.DataFrame(data)
+print(df)
+
+
+
+# Check missing values
+print(df.isnull().sum())
+
+# Fill missing values with mean
+
+
+df['Marks'] = df['Marks'].fillna(df['Marks'].mean())
+df['Attendance'] = df['Attendance'].fillna(df['Attendance'].mean())
+df['StudyHours'] = df['StudyHours'].fillna(df['StudyHours'].mean())
+
+
+
+
+# Handle Inconsistencies
+# Marks should be between 0 and 100
+df['Marks'] = df['Marks'].clip(0, 100)
+
+# Attendance should be between 0 and 100
+df['Attendance'] = df['Attendance'].clip(0, 100)
+
+
+
+# IQR
+Q1 = df['Marks'].quantile(0.25)
+Q3 = df['Marks'].quantile(0.75)
+IQR = Q3 - Q1
+
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+# outliers = df[(df['Marks'] < lower_bound) | (df['Marks'] > upper_bound)]
+# print("Outliers (IQR method):")
+# print(outliers)
+lower_bound ,upper_bound
+
+
+# Z-Score
+from scipy import stats
+
+z_scores = np.abs(stats.zscore(df['Marks']))
+outliers_z = df[z_scores > 3]
+
+print("Outliers (Z-score method):")
+print(outliers_z)
+
+
+
+
+# Data Transformation
+# (A) Log Transformation
+df['Marks_log'] = np.log(df['Marks'] + 1)
+
+# B) Normalization (Min-Max Scaling)
+df['Marks_norm'] = (df['Marks'] - df['Marks'].min()) / (df['Marks'].max() - df['Marks'].min())
+
+# (C) Standardization (Z-score Scaling)
+df['Marks_scaled'] = (df['Marks'] - df['Marks'].mean()) / df['Marks'].std()
+
+
+print(df)
+print(df.describe())
